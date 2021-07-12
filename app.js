@@ -20,7 +20,8 @@ async function getPages(pageNumber = null) {
 
 const res = await getPages();
 const firstFetch = cheerio.load(res)
-const lastPage = firstFetch('a.page-link:contains("Last")').data('ci-pagination-page')
+// const lastPage = firstFetch('a.page-link:contains("Last")').data('ci-pagination-page')
+const lastPage = 117
 
 for (let i = lastPage; i > 0; i--) {
     console.log(`Halaman ${i}`);
@@ -40,7 +41,7 @@ for (let i = lastPage; i > 0; i--) {
         console.log(`Found post/putusan [${title}]`)
     })
 
-    pagePosts.reverse()
+    // pagePosts.reverse()
     // posts.push(...pagePosts)
 
     for (const post of pagePosts) {
@@ -53,7 +54,8 @@ for (let i = lastPage; i > 0; i--) {
         const $post = cheerio.load(postRes.data)
         const pdfDownloadAnchor = $post('a[href*="/pdf/"]');
         if (pdfDownloadAnchor.attr('href') == undefined) {
-            console.log("Download link tidak tersedia.")
+            console.log("Download link tidak tersedia.");
+            continue;
         }
         const filename = pdfDownloadAnchor.text().replace(/\//gi, '_')
         const fileurl = pdfDownloadAnchor.attr('href')
